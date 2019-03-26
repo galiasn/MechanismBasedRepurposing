@@ -11,14 +11,15 @@ Created on Sun Jan 13 14:04:55 2019
 
 @author: Galia
 """
-
+import pandas as pn
 from Bio import Entrez
 
 def search(query):
     Entrez.email = 'galiasn"gmal.com'
     handle = Entrez.esearch(db='pubmed', 
                             sort='pub+date', 
-                            retmode='xml', 
+                            retmode='xml',
+                            retmax=100000,
                             term=query)
     results = Entrez.read(handle)
     return results
@@ -28,6 +29,7 @@ def fetch_details(id_list):
     Entrez.email = 'galiasn@gmail.com'
     handle = Entrez.efetch(db='pubmed',
                            retmode='xml',
+                           retmax=100000,
                            id=ids)
     results = Entrez.read(handle)
     return results
@@ -39,7 +41,7 @@ def getyear(pid):
     else:
         print(publictionDate[pid])
         return publictionDate[pid]
-repo = pn.read_csv("D:\\Galia\\mechanismBased\\repo.csv")
+repo = pn.read_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/repo.csv")
 repoIndresults=[]
 index=0
 while index<len(repo):
@@ -56,8 +58,8 @@ while index<len(repo):
     index+=1
     print(index)
 repo['yearRes'] = repoIndresults
-repo.to_csv("C:\\Users\\Galia\\Downloads\\repoyear.csv") 
-repo = pn.read_csv("C:\\Users\\Galia\\Downloads\\repoyear.csv")
+repo.to_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/repoyear.csv")
+repo = pn.read_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/repoyear.csv")
 repo['yearRes'] = repo['yearRes'].apply(int)
 repo = repo[repo['yearRes']>0].copy()
 repo['yearRes'] = repo['yearRes'].apply(str)
@@ -78,11 +80,11 @@ for i, paper in enumerate(papers['PubmedArticle']):
     print(count)
     count+=1        
 repo['pubYear'] = repo['yearRes'].apply(getyear)
-repo.to_csv("C:\\Users\\Galia\\Downloads\\repoyearWYear.csv") 
+repo.to_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/repoyearWYear.csv")
 
 repo['count'] = [1]*len(repo)
 repogb= repo.groupby(['drug_id'],as_index=False).sum()
 repogb = repogb[repogb['count']>1]
 repo = repo[repo['drug_id'].isin(repogb['drug_id'])]
-repo.to_csv("C:\\Users\\Galia\\Downloads\\repowYear.csv")
+repo.to_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/repowYear.csv")
 

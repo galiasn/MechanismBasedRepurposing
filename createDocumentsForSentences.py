@@ -82,7 +82,7 @@ def createDocumentFromTerms(term,sentences):
     return doc
 
 
-sentencesT = pn.read_csv("D:\\Galia\\mechanismBased\\sentences_TREATS.csv",sep=',')
+sentencesT = pn.read_csv("/mnt/galiasn/sentences_TREATS/sentences_TREATS.csv",sep=',')
 sentencesT = sentencesT[sentencesT['PREDICATE']=='TREATS']
 sentencesT = sentencesT[sentencesT['PMID'].isin(pmidBefore)]
 
@@ -94,7 +94,7 @@ drugsT = sentencesT[sentencesT['SUBJECT_SEMTYPE'].isin(['phsu','rcpt'])]['SUBJEC
 
 
 
-sentencesS = pn.read_csv('D:\\Galia\\mechanismBased\\sentences_STIMULATES_PLUS.csv',sep=',')
+sentencesS = pn.read_csv('/mnt/galiasn/sentences_STIMULATES_PLUS.csv',sep=',')
 sentencesS = sentencesS[sentencesS['PREDICATE'].isin(['STIMULATES','INHIBITS','PREVENTS'])]
 #isa = pn.read_csv('D:\\Galia\\mechanismBased\\sentences_ISA.csv')
 #sentencesS = sentencesS.append(isa)
@@ -119,8 +119,8 @@ for d in drugsT:
     drugDocumentsT[d] = createDocument(d,sentencesT)#createDocument(d,sentencesT)
     count+=1
 
-save_obj(drugDocumentsT,"D:\\Galia\\mechanismBased\\receptorDrugDocuments_Treats_1990")
-drugDocumentsT = load_obj("D:\\Galia\\mechanismBased\\receptorDrugDocuments_Treats_1990")
+save_obj(drugDocumentsT,"/home/galiasn/DATA/MechanismBasedRepurposing/receptorDrugDocuments_Treats_1990")
+drugDocumentsT = load_obj("/home/galiasn/DATA/MechanismBasedRepurposing/receptorDrugDocuments_Treats_1990")
 
 #Bag of words
 veryLong ={}
@@ -128,8 +128,8 @@ for d in drugDocumentsT.keys():
     if len(drugDocumentsT[d])>300:
         veryLong[d] = drugDocumentsT[d]
 drugs_T =list( veryLong.keys())
-save_obj(drugs_T,'D:\\Galia\\mechanismBased\\drugsList_Treats_drugreceptors_1990')
-drugs_T = load_obj('D:\\Galia\\mechanismBased\\drugsList_Treats_drugreceptors_1990')
+save_obj(drugs_T,'/home/galiasn/DATA/MechanismBasedRepurposing/drugsList_Treats_drugreceptors_1990')
+drugs_T = load_obj('/home/galiasn/DATA/MechanismBasedRepurposing/Data/drugsList_Treats_drugreceptors_1990')
 
 '''
 vectorizer = CountVectorizer()
@@ -138,8 +138,8 @@ XdrugDocuments = vectorizer.fit_transform(veryLong.values())
 vectorizerT = TfidfVectorizer()
 XdrugDocumentsT = vectorizerT.fit_transform(veryLong.values())
 
-save_obj(XdrugDocumentsT,'D:\\Galia\\mechanismBased\\XdrugDocumentsTreats_drugreceptors_1990')
-XdrugDocumentsT = load_obj('D:\\Galia\\mechanismBased\\XdrugDocumentsTreats_drugreceptors_1990')
+save_obj(XdrugDocumentsT,'/home/galiasn/DATA/MechanismBasedRepurposing/XdrugDocumentsTreats_drugreceptors_1990')
+XdrugDocumentsT = load_obj('/home/galiasn/DATA/MechanismBasedRepurposing/Data/XdrugDocumentsTreats_drugreceptors_1990')
 
 svd = TruncatedSVD(n_components=300, n_iter=7, random_state=42)
 XdrugDocumentsT_SVD = svd.fit_transform(XdrugDocumentsT)
@@ -162,8 +162,8 @@ for d in drugsS:
 #save_obj(drugDocuments_S,"D:\\Galia\\mechanismBased\\receptorDrugDocuments_StimulatesInhibitsPrevents_AllYearFullSent")
 #drugDocuments_S = load_obj("D:\\Galia\\mechanismBased\\receptorDrugDocuments_StimulatesANDISA_AllYearFullSent")
 
-save_obj(drugDocuments_S,"D:\\Galia\\mechanismBased\\receptorDrugDocuments_StimulatesInhibitsPrevents_1990")
-drugDocuments_S = load_obj("D:\\Galia\\mechanismBased\\receptorDrugDocuments_StimulatesInhibitsPrevents_1990")
+save_obj(drugDocuments_S,"/home/galiasn/DATA/MechanismBasedRepurposing/receptorDrugDocuments_StimulatesAll_1990")
+drugDocuments_S = load_obj("/home/galiasn/DATA/MechanismBasedRepurposing/receptorDrugDocuments_StimulatesAll_1990")
 #Now we look at the similarities between the drugs
 
 #Bag of words
@@ -174,14 +174,14 @@ for d in drugDocuments_S.keys():
 drugs_Stimulates = veryLong_Stimulates.keys()
 
 drugs_S = list(veryLong_Stimulates.keys())
-save_obj(drugs_S,'D:\\Galia\\mechanismBased\\drugsList_StimulatesInhibitsPrevents_1990')
-drugs_S = load_obj('D:\\Galia\\mechanismBased\\drugsList_StimulatesInhibitsPrevents_1990')
+save_obj(drugs_S,'/home/galiasn/DATA/MechanismBasedRepurposing/drugsList_StimulatesAll_1990')
+drugs_S = load_obj('/home/galiasn/DATA/MechanismBasedRepurposing/drugsList_StimulatesAll_1990')
 
-vectorizer_S = TfidfVectorizer(max_features = len(drugs_S))
+vectorizer_S = TfidfVectorizer()
 XdrugDocuments_S = vectorizer_S.fit_transform(veryLong_Stimulates.values())
 
-save_obj(XdrugDocuments_S,'D:\\Galia\\mechanismBased\\XdrugDocumentsStimulatesInhibitsPrevents_1990')
-XdrugDocuments_S = load_obj('D:\\Galia\\mechanismBased\\XdrugDocumentsStimulatesInhibitsPrevents_1990')
+save_obj(XdrugDocuments_S,'/home/galiasn/DATA/MechanismBasedRepurposing/XdrugDocumentsStimulatesAll_1990')
+XdrugDocuments_S = load_obj('/home/galiasn/DATA/MechanismBasedRepurposing/XdrugDocumentsStimulatesAll_1990')
 
 svd = TruncatedSVD(n_components=300, n_iter=7, random_state=42)
 XdrugDocumentsS_SVD = svd.fit_transform(XdrugDocuments_S)

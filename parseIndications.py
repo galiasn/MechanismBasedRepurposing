@@ -9,5 +9,5 @@ from gensim.models.keyedvectors import KeyedVectors
 
 
 
-model = KeyedVectors.load_word2vec_format('D:\\Galia\\DeVine_etal_200\\DeVine_etal_200.txt')
+model = KeyedVectors.load_word2vec_format('/mnt/galiasn/DeVine_etal_200/DeVine_etal_200.txt')
 

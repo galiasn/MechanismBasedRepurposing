@@ -15,13 +15,13 @@ def toLower(s):
     return s.lower()
 
 import pandas as pn
-tst = pn.read_csv("D:\\Galia\\mechanismBased\\full.csv")
+tst = pn.read_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/full.csv")
 tst = tst[tst['status']=='Approved']
 tst['count'] = [1]*len(tst)
 tstgb = tst.groupby('drug_id',as_index=False).sum()
 tstgb = tstgb[tstgb['count']>1]
 tstgb = pn.merge(tstgb,tst[['drug_name','drug_id','ind_name']],on='drug_id',how='inner')
-tstgb.to_csv("D:\\Galia\\mechanismBased\\repo.csv")
+tstgb.to_csv("/home/galiasn/DATA/MechanismBasedRepurposing/Data/repo.csv")
 
 applications = pn.read_csv("D:\\Galia\FDA\\Applications.csv")
 submission = pn.read_csv("D:\\Galia\FDA\\Submissions.csv")
